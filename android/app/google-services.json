@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "405962335812",
+    "project_id": "cdcnpm-53fdf",
+    "storage_bucket": "cdcnpm-53fdf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:405962335812:android:b11d21683e48ba410a3e11",
+        "android_client_info": {
+          "package_name": "com.example.flutter_student"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "405962335812-giu4ep67717qa8gehr6qcdlvqc5re3do.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5Gl-ZQdBI2V9JzX86PLADvPC7_fF4sNw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "405962335812-giu4ep67717qa8gehr6qcdlvqc5re3do.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
