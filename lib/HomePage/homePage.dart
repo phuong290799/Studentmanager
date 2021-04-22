@@ -149,7 +149,8 @@ class _HomePageState extends State<HomePage> {
                 border: Border.all(color: Colors.black12, width: 2),
               ),
               width: MediaQuery.of(context).size.width - 40,
-              height: MediaQuery.of(context).size.height - 500,
+              //height: MediaQuery.of(context).size.height - 500,
+              height:300,
               child: StreamBuilder<QuerySnapshot>(
                   stream: (name != "" && name != null)
                       ? FirebaseFirestore.instance
