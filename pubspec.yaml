@@ -21,6 +21,13 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  firebase_storage: ^8.0.2
+  image_picker: ^0.7.4
+  firebase_auth: ^1.0.1
+  camera:
+  path_provider:
+  path:
+  fluttertoast:
   cloud_firestore: ^1.0.5
   #firebase_database: ^6.1.2
   firebase_core:
@@ -57,11 +64,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/cart1.png
-    - assets/images/khung.png
-    - assets/images/adjust.png
-    - assets/images/image1.jpg
-    - assets/images/admin.png
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_student/Controller/controller.dart';
 import 'package:flutter_student/HomePage/drawer.dart';
-import 'package:flutter_student/HomePage/listHome.dart';
-import 'package:flutter_student/Models/studentObj.dart';
-import 'package:flutter_student/Student/addStudent.dart';
+import 'package:flutter_student/HomePage/cardStudent.dart';
+import 'package:flutter_student/Login/login.dart';
+import 'package:flutter_student/Student/addStudents.dart';
 import 'package:flutter_student/Style/colors.dart';
 import 'package:flutter_student/Style/style.dart';
 import 'package:get/get.dart';
@@ -15,15 +15,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-Controller _controllerHome = Get.put(Controller());
+  late String name = "";
+  Controller _controllerHome = Get.put(Controller());
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   void initState() {
     // TODO: implement initState
-  _controllerHome.ReadStudent();
     super.initState();
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
@@ -105,6 +104,9 @@ Controller _controllerHome = Get.put(Controller());
                               hintText: "Search ",
                               hintStyle: AppThemes.Text14,
                             ),
+                            onChanged: (text) {
+                              name = text.toString();
+                            },
                           ),
                         ),
                       ),
@@ -119,12 +121,8 @@ Controller _controllerHome = Get.put(Controller());
                             bottomRight: Radius.circular(10),
                           ),
                         ),
-                        child: Container(
-                            child: GestureDetector(
-                                onTap: (){
-                                  initState();
-                                },
-                                child: Icon(Icons.arrow_drop_down_circle_outlined))),
+                        child:
+                            Container(child: Icon(Icons.person_search_rounded)),
                       ),
                     ],
                   ),
@@ -152,63 +150,128 @@ Controller _controllerHome = Get.put(Controller());
               ),
               width: MediaQuery.of(context).size.width - 40,
               height: MediaQuery.of(context).size.height - 500,
-              child: _controllerHome.list.length == 0
-                  ?Container(
-                child: Center(
-                  child: Text("Loading..."),
-                ),
-              ) :
-              ListView.builder(
-                itemCount: _controllerHome.list.length,
-                itemBuilder: (context, index) {
-                  print(_controllerHome.list[index].id);
-                  return Container(
-                    padding: EdgeInsets.only(left: 10, right: 10),
-                    child: ListHome(
-                      id: _controllerHome.list[index].id,
-                      name: _controllerHome.list[index].name,
-                      image: _controllerHome.list[index].image,
-                      address: _controllerHome.list[index].address,
-                      gpa: _controllerHome.list[index].gpa,
-                      note: _controllerHome.list[index].note,
-                    ),
-                  );
-                },
-              ),
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: (name != "" && name != null)
+                      ? FirebaseFirestore.instance
+                          .collection('Student')
+                      .where('name',isEqualTo: name)
+
+                      .snapshots()
+                      : FirebaseFirestore.instance
+                          .collection("Student")
+                          .snapshots(),
+                  builder: (context,AsyncSnapshot<QuerySnapshot> snapshot) {
+                    return (snapshot.connectionState == ConnectionState.waiting)
+                        ? Center(child: CircularProgressIndicator())
+                        : ListView.builder(
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              //   DocumentSnapshot data = snapshot.data!.docs[index];
+
+                              // child: StreamBuilder(
+                              //     stream: FirebaseFirestore.instance
+                              //         .collection('Student')
+                              //         .snapshots(),
+                              //     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                              //       if (!snapshot.hasData) {
+                              //         return Container(
+                              //           child: Center(
+                              //             child: Text("Loading...\n Không có dữ liệu"),
+                              //           ),
+                              //         );
+                              //       }
+                              //       return ListView.builder(
+                              //         itemCount: snapshot.data!.docs.length,
+                              //         itemBuilder: (context, index) {
+                              //           DocumentSnapshot document = snapshot.data!.docs[index];
+                              return Container(
+                                padding: EdgeInsets.only(left: 10, right: 10),
+                                child: CardStudent(
+                                  image: snapshot.data!.docs[index]['image'],
+                                  name: snapshot.data!.docs[index]['name'],
+                                  tuoi: snapshot.data!.docs[index]['tuoi'],
+                                  phone: snapshot.data!.docs[index]['phone'],
+                                  address: snapshot.data!.docs[index]
+                                      ['address'],
+                                  gioithieu: snapshot.data!.docs[index]
+                                      ['gioithieu'],
+                                  id: snapshot.data!.docs[index].id,
+                                ),
+                              );
+                            },
+                          );
+                  }),
             ),
             SizedBox(
               height: 20,
             ),
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Thêm sinh viên",
-                    style: AppThemes.Text20,
+            Padding(
+              padding: EdgeInsets.only(left: 50, right: 50),
+              child: RaisedButton(
+                onPressed: () {
+                  if (_controllerHome.IsLogin) {
+                    print("login");
+                    print(_controllerHome.IsLogin);
+                    Get.to(() => Add());
+                  } else {
+                    showdialoglogin();
+                  }
+                },
+                color: AppColors.BACKGROUND,
+                child: Container(
+                  height: 40,
+                  child: Center(
+                    child: Text(
+                      "Thêm sinh viên",
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
                   ),
-                  Container(
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.to(AddStudent());
-                      },
-                      child: Icon(
-                        Icons.add,
-                        size: 40,
-                      ),
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.BACKGROUND,
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                  )
-                ],
+                ),
+                shape: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    borderSide:
+                        BorderSide(color: AppColors.BACKGROUND, width: 1)),
               ),
-            )
+            ),
           ],
         ),
       ),
     );
+  }
+
+  void search(String text) {}
+
+  Future<void> showdialoglogin() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            title: Text(
+              "     Bạn phải đăng nhập trước!\nBạn có muốn quay lại trang login",
+              style: AppThemes.Text16Medium,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+            content: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        Get.off(Login());
+                      },
+                      child: Text("Có")),
+                  TextButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child: Text("Không")),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
