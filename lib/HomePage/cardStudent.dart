@@ -40,10 +40,14 @@ class _CardStudentState extends State<CardStudent> {
             Container(
               width: 100,
               height: 100,
-              child: Image.network(
-                widget.image,
-                fit: BoxFit.contain,
-              ),
+            child:  FadeInImage(
+             placeholder: AssetImage("assets/images/nam.jpg"),
+            image: NetworkImage( widget.image,
+             ),
+          ),
+            ),
+            SizedBox(
+              width: 20,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,7 +55,7 @@ class _CardStudentState extends State<CardStudent> {
 
                 Text("Tên: " + widget.name,style:TextStyle(color: Colors.black, fontSize: 16),),
                 SizedBox(
-                  width: 10,
+                  height: 20,
                 ),
                 Text("Tuổi: " + widget.tuoi,style:TextStyle(color: Colors.black, fontSize: 16),),
                 SizedBox(

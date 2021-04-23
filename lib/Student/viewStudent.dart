@@ -68,11 +68,14 @@ class _ViewStudentState extends State<ViewStudent> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child: Image.network(
-                  widget.image,
-                  fit: BoxFit.contain,
-                  height: 150,
-                  width: 150,
+                child:  Container(
+                  height: 200,
+                  width: 200,
+                  child: FadeInImage(
+                    placeholder: AssetImage("assets/images/nam.jpg"),
+                    image: NetworkImage( widget.image,
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: 20,),

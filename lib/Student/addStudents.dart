@@ -16,6 +16,7 @@ class Add extends StatefulWidget {
 }
 
 class _AddState extends State<Add> {
+  late final String _url;
   bool pick =true;
  late File _image  ;
  final picker = ImagePicker();
@@ -249,7 +250,11 @@ class _AddState extends State<Add> {
               _image.path);
       UploadTask uploadTask = _refrence.putFile(_image);
       var imageUrl = await (await uploadTask).ref.getDownloadURL();
-      String _url = imageUrl.toString();
+      if(imageUrl== null){
+      _url="assets/images/nam.jpg";}
+      else{
+         _url = imageUrl.toString();
+      }
       var map = {
         'phone': phone,
         'name': name,

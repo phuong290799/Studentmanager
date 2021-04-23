@@ -33,7 +33,7 @@ class Splash extends StatelessWidget {
               TextButton(onPressed: (){
                 Get.off(()=>HomePage());
               }, child: Text("Sử dụng với tư cách khách",style: TextStyle(fontSize: 20),)),
-
+              SizedBox(height: 200,),
 
             ],
           ),

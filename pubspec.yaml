@@ -21,10 +21,10 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  firebase_auth_web:
+  firebase_auth_web: ^1.0.7
   firebase_storage: ^8.0.2
   image_picker: ^0.7.4
-  firebase_auth: ^1.0.1
+  firebase_auth:
   camera:
   path_provider:
   path:
